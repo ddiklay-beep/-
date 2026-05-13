@@ -18,13 +18,13 @@ aliases:
 2. **למי הוא שייך** (ראובן / צוות / חיצוני),
 3. **קבצים קשורים** דרך `[[wikilinks]]`.
 
-נכון ל-2026-05-13 הפרויקט מורכב מ-**8 קבצים שלי בשורש/`.claude/`** (CLAUDE.md, .env, .env.example, .gitignore, שלושת ה-.gitkeep ב-`.claude/*/`, plus settings.local.json הלוקלי) + **sub-agent יעל** ([[file-yael-md]] ב-`.claude/agents/yael.md`) ו-**3 תיקיות עבודה** שלו (`yael/reference/`, `Content/`, `Output/` — כל אחת עם `.gitkeep`) + **17 סקילים מותקנים** (14 מ-Superpowers, 3 obsidian skills). תיעוד הסקילים הוא ברמת ה-skill folder, לא ברמת קובץ פנימי.
+נכון ל-2026-05-13 הפרויקט מורכב מ-**8 קבצים שלי בשורש/`.claude/`** (CLAUDE.md, .env, .env.example, .gitignore, שלושת ה-.gitkeep ב-`.claude/*/`, plus settings.local.json הלוקלי) + **שני sub-agents** ([[file-yael-md|יעל]] ב-`.claude/agents/yael.md` ו-[[file-yuval-md|יובל]] ב-`.claude/agents/yuval.md`) ו-**5 תיקיות עבודה** (`yael/reference/`, `yuval/reference/`, `yuval/outputs/`, `Content/`, `Output/`, `Output/images/` — כל אחת עם `.gitkeep`) + **17 סקילים חיצוניים** (14 מ-Superpowers, 3 obsidian skills) + **סקיל פרויקט-מקומי [[skill-gpt-image-gen]]** ב-`.claude/skills/gpt-image-gen/`. תיעוד הסקילים הוא ברמת ה-skill folder, לא ברמת קובץ פנימי.
 
 ה-vault הזה נמצא ב-`vault/Meeting Notes/`. ה-`_index.md` שם מוביל לכל ה-notes. כל יצירה/עדכון של קובץ בפרויקט מחייבת הוספת note + עדכון ה-index.
 
 ## Open Questions
 
-- **Sub-agents יובל וחן עדיין לא הוגדרו** ב-`.claude/agents/`. [[file-yael-md|יעל]] הושלמה ב-2026-05-13. כשייווצרו יובל וחן — להוסיף file-doc לכל אחד ולעדכן את [[file-gitkeep-agents]].
+- **Sub-agent חן עדיין לא הוגדר** ב-`.claude/agents/`. [[file-yael-md|יעל]] הושלמה ב-2026-05-13, [[file-yuval-md|יובל]] הושלם ב-2026-05-13. כשתיווצר חן — להוסיף file-doc.
 - `.claude/agents/.gitkeep` כעת **מיותר טכנית** (התיקייה כבר לא ריקה — יש בה את `yael.md`). להישאר בעקבות ההוראה הכוללת "לא לדרוס", או להסיר במעבר עתידי?
 - האם להגדיר `model:` ל-[[file-yael-md|yael]] (sonnet/opus/haiku) או להישאר ב-`inherit` (ברירת-מחדל)? `sonnet` סביר לכתיבה; `opus` יקר אך איכותי יותר; `haiku` חלש מדי לתוכן.
 - האם להוסיף `permissionMode: acceptEdits` ליעל, כדי שלא תייצר prompts בכל Write ל-`Output/`?
@@ -83,3 +83,29 @@ aliases:
   - בקרת איכות ידנית למשתמש: לבדוק שאוטו-דלגציה מטריגרת על "שכתבי בבקשה את `Content/X.md`", לוודא ש-`Output/X.md` ו-`Output/X.html` נוצרים, ולבדוק ש-יעל מסרבת בעדינות למשימות שדורשות WebFetch.
 
 - **Related:** [[file-yael-md]], [[file-claude-md]], [[file-gitkeep-content]], [[file-gitkeep-output]], [[file-gitkeep-yael-reference]], [[file-gitkeep-agents]], [[skill-writing-skills]], [[skill-obsidian-markdown]]
+
+### 2026-05-13 — הוספת יובל (מעצב תמונות) + סקיל gpt-image-gen + תהליך מאמר עם תמונות [shipped]
+
+- **What was done:**
+  - **סקיל חדש** [[skill-gpt-image-gen]] ב-`.claude/skills/gpt-image-gen/SKILL.md` — מעטפת ל-OpenAI Images API, מודל `gpt-image-2` (יצא 2026-04-21). שתי שיטות (curl+jq, python stdlib fallback).
+  - **Sub-agent חדש** [[file-yuval-md|יובל]] ב-`.claude/agents/yuval.md` — `tools: Read, Write, Bash, Glob`. Workflow 8-שלבי שכולל קריאת `yuval/reference/`, חיבור prompt, slugify, קריאת הסקיל, שמירת `.txt` סמוך, אימות, ודיווח.
+  - **תיקיות עבודה חדשות:** [[file-gitkeep-yuval-reference|yuval/reference/]], [[file-gitkeep-yuval-outputs|yuval/outputs/]], [[file-gitkeep-output-images|Output/images/]].
+  - **עדכון [[file-claude-md|CLAUDE.md]]:** הרחבת שורת יובל ל-Yael-shaped block עם triggers בעברית/אנגלית, הוספת סעיף "תהליך מאמר עם תמונות" (יעל → יובל → ראובן ממזג), עדכון מבנה התיקיות.
+  - **עדכון [[file-yael-md|yael.md]]:** הוספת שלב 4 ב-workflow ("זיהוי מקומות לתמונות") שמכניס `{{IMAGE_NEEDED:"..."}}` placeholders ב-MD וב-HTML, ועדכון פורמט הדיווח לראובן עם בלוק `## Image placeholders`.
+  - **עדכון [[file-env-example]]:** הוספת `OPENAI_API_KEY=` עם הערה בעברית. [[file-env]] המקומי כבר היה כולל מפתח.
+  - **עדכון [[file-gitignore]]:** הוספת `yuval/outputs/*.png` ו-`Output/images/*.png`. ה-`.txt` של ה-prompts וה-`.gitkeep` נשארים מקומיטים.
+  - **תיעוד vault מלא:** [[file-yuval-md]], [[skill-gpt-image-gen]], [[file-gitkeep-yuval-reference]], [[file-gitkeep-yuval-outputs]], [[file-gitkeep-output-images]] + עדכון [[_index]] עם הקטגוריה החדשה "סקילים פרויקט-מקומיים".
+
+- **Decisions:**
+  - **המודל קבוע ב-`gpt-image-2`** (אזהרה גדולה ב-SKILL). המשתמש הבהיר: המודל קיים, יצא 2026-04-21, ייתכן שלא בידע פנימי ישן יותר. אם הקריאה נכשלת — לחשוד ב-API key/parameters, לא בשם המודל.
+  - **גישת merge — "Copy to Output/images/"** (לא reference ל-`yuval/outputs/` ישירות, ולא base64 ב-HTML). יתרון: `Output/` נשאר self-contained וניתן להעברה. החיסרון: כפילות של PNGs — מקובל.
+  - **Yael writes MD+HTML with placeholders in both; Raeuven substitutes** (לא רגנרציה של HTML). יתרון: deterministic literal string-replace, צעד אחד פחות.
+  - **כלים של יובל: 4** (`Read, Write, Bash, Glob`) — Bash חיוני לקריאת ה-API, Glob לסריקת רפרנס, Write לתמונה ול-`.txt`, Read לרפרנס. בלי Edit (לא עורך קבצים) ובלי Skill (קורא לסקיל דרך Bash).
+  - **שיטה B (python stdlib) היא ברירת המחדל בפועל** ל-Windows / Git Bash; שיטה A (curl+jq) נשארה כתיעוד ו-fallback ב-environments עם jq.
+
+- **Notes / Caveats:**
+  - לא בוצע smoke test end-to-end לסקיל — דורש `OPENAI_API_KEY` תקין + תקציב פעיל ב-OpenAI. אומת רק structural (frontmatter, נתיבים, gitignore).
+  - PNG generation לא ידידותי לסביבת CI אוטומטית — לכן לא ברצף בדיקות.
+  - יעל **כן יוצרת HTML עם placeholders כטקסט-שורה** (לא בתוך `<img>`). ראובן עושה literal substitution — דורש שה-substitution string יהיה ייחודי באמת. אם משתמש כותב `{{IMAGE_NEEDED:` במאמר עצמו, יהיה collision.
+
+- **Related:** [[file-yuval-md]], [[skill-gpt-image-gen]], [[file-claude-md]], [[file-yael-md]], [[file-env]], [[file-env-example]], [[file-gitignore]], [[file-gitkeep-yuval-reference]], [[file-gitkeep-yuval-outputs]], [[file-gitkeep-output-images]]

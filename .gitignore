@@ -5,3 +5,7 @@
 .env
 .env.local
 .env.*.local
+
+# Generated images — keep .gitkeep + sibling .txt prompts; don't bloat git with PNGs
+yuval/outputs/*.png
+Output/images/*.png

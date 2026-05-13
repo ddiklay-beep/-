@@ -28,9 +28,16 @@ tags:
 
 ### תיעוד סוכנים (sub-agents)
 - [[file-yael-md]] — `.claude/agents/yael.md`, יעל — כותבת התוכן (sub-agent ראשון)
-- [[file-gitkeep-yael-reference]] — `yael/reference/.gitkeep`, placeholder לדוגמאות סגנון
+- [[file-yuval-md]] — `.claude/agents/yuval.md`, יובל — מעצב התמונות (sub-agent שני)
+- [[file-gitkeep-yael-reference]] — `yael/reference/.gitkeep`, placeholder לדוגמאות סגנון כתיבה
+- [[file-gitkeep-yuval-reference]] — `yuval/reference/.gitkeep`, placeholder לדוגמאות סגנון ויזואלי
+- [[file-gitkeep-yuval-outputs]] — `yuval/outputs/.gitkeep`, placeholder לארכיון התמונות של יובל
 - [[file-gitkeep-content]] — `Content/.gitkeep`, placeholder לתיקיית מאמרי גלם
 - [[file-gitkeep-output]] — `Output/.gitkeep`, placeholder לתיקיית תוצרים משוכתבים
+- [[file-gitkeep-output-images]] — `Output/images/.gitkeep`, placeholder לתמונות המעובדות במאמרים הסופיים
+
+### תיעוד סקילים מותקנים — פרויקט-מקומיים
+- [[skill-gpt-image-gen]] — `.claude/skills/gpt-image-gen/`, מעטפת ל-OpenAI Images API (gpt-image-2) — יובל
 
 ### תיעוד סקילים מותקנים — חיצוניים (Superpowers)
 - [[skill-brainstorming]] — סיעור מוחות מובנה

@@ -26,6 +26,24 @@
 - `skills/` — יכולות מותאמות שהצוות יכול להשתמש בהן.
 - `commands/` — פקודות מותאמות (slash commands) שהמשתמש יכול להפעיל.
 
+## נוהל עבודה — חובה (Vault Protocol)
+
+לפני כל משימה ובסיומה — חובה להפעיל את הסקיל
+**[`obsidian-vault-workflow`](.claude/skills/obsidian-vault-workflow/SKILL.md)**:
+
+- **Phase 1 — בתחילת כל משימה:** לאתר את קובץ-הטופיק הרלוונטי תחת
+  `vault/`, לקרוא את ה-Overview + Open Questions + Session Log שלו,
+  ולסרוק 2-3 Meeting Notes אחרונים. אם אין קובץ-טופיק תואם — לציין
+  זאת ולתכנן יצירה בסוף המשימה.
+- **Phase 2 — בסיום כל משימה:** לצרף ערך מתוארך לתחתית ה-Session Log
+  של אותו טופיק (`### YYYY-MM-DD — title [status]`), לעדכן את ה-Overview
+  אם השתנה ה-scope, לעדכן את ה-Open Questions, ולוודא ע"י קריאה חוזרת.
+
+הכלל הזה חל על **כל** משימה: קוד, תוכן, ארכיטקטורה, UI, באגים, ביקורות.
+היחיד שפטור — שאלה read-only טהורה שלא נוגעת בקבצים ולא מקבלת החלטות.
+
+נקודת התחלה לחיפוש: [`vault/Meeting Notes/_index.md`](vault/Meeting%20Notes/_index.md).
+
 ## הערה
 
 זהו קובץ ראשוני. בשלב הבא של הסדנה נוסיף כאן:

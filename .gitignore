@@ -1,2 +1,7 @@
 # Claude Code local settings (per-machine, not for the repo)
 .claude/settings.local.json
+
+# Local environment / secrets — never commit
+.env
+.env.local
+.env.*.local

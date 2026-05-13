@@ -18,13 +18,16 @@ aliases:
 2. **למי הוא שייך** (ראובן / צוות / חיצוני),
 3. **קבצים קשורים** דרך `[[wikilinks]]`.
 
-נכון ל-2026-05-13 הפרויקט מורכב מ-**8 קבצים שלי בשורש/`.claude/`** (CLAUDE.md, .env, .env.example, .gitignore, שלושת ה-.gitkeep ב-`.claude/*/`, plus settings.local.json הלוקלי) + **שני sub-agents** ([[file-yael-md|יעל]] ב-`.claude/agents/yael.md` ו-[[file-yuval-md|יובל]] ב-`.claude/agents/yuval.md`) ו-**5 תיקיות עבודה** (`yael/reference/`, `yuval/reference/`, `yuval/outputs/`, `Content/`, `Output/`, `Output/images/` — כל אחת עם `.gitkeep`) + **17 סקילים חיצוניים** (14 מ-Superpowers, 3 obsidian skills) + **סקיל פרויקט-מקומי [[skill-gpt-image-gen]]** ב-`.claude/skills/gpt-image-gen/`. תיעוד הסקילים הוא ברמת ה-skill folder, לא ברמת קובץ פנימי.
+נכון ל-2026-05-13 הפרויקט מורכב מ-**8 קבצים שלי בשורש/`.claude/`** (CLAUDE.md, .env, .env.example, .gitignore, שלושת ה-.gitkeep ב-`.claude/*/`, plus settings.local.json הלוקלי) + **שלושה sub-agents** ([[file-yael-md|יעל]] ב-`.claude/agents/yael.md`, [[file-yuval-md|יובל]] ב-`.claude/agents/yuval.md`, ו-[[file-chen-md|חן]] ב-`.claude/agents/chen.md`) ו-**6 תיקיות עבודה** (`yael/reference/`, `yuval/reference/`, `yuval/outputs/`, `chen/Memory/`, `Content/`, `Output/`, `Output/images/` — כל אחת עם `.gitkeep` או קובץ עוגן אחר) + **17 סקילים חיצוניים** (14 מ-Superpowers, 3 obsidian skills) + **סקיל פרויקט-מקומי [[skill-gpt-image-gen]]** ב-`.claude/skills/gpt-image-gen/`. תיעוד הסקילים הוא ברמת ה-skill folder, לא ברמת קובץ פנימי.
 
 ה-vault הזה נמצא ב-`vault/Meeting Notes/`. ה-`_index.md` שם מוביל לכל ה-notes. כל יצירה/עדכון של קובץ בפרויקט מחייבת הוספת note + עדכון ה-index.
 
 ## Open Questions
 
-- **Sub-agent חן עדיין לא הוגדר** ב-`.claude/agents/`. [[file-yael-md|יעל]] הושלמה ב-2026-05-13, [[file-yuval-md|יובל]] הושלם ב-2026-05-13. כשתיווצר חן — להוסיף file-doc.
+- **שלושת ה-sub-agents מוגדרים** (יעל, יובל, חן — כולם ב-2026-05-13). השלב הבא: slash commands תחת `.claude/commands/` שיעטפו זרימות נפוצות (למשל `/article <נושא>` שמפעיל חן→יעל→יובל ברצף).
+- **חלון cache של 30 יום** ב-[[file-chen-md|חן]] קשיח ב-prompt. אם תתעורר צורך — להגמיש (parameter בבקשה מראובן, או חלון שונה לפי tag כמו "evergreen"/"news").
+- **אוטו-chain חן → יעל → יובל לא נבחן end-to-end.** הוגדר ב-[[file-claude-md|CLAUDE.md]] בסעיף "תהליך מחקר → תוכן → תמונות" אבל לא רץ בפועל.
+- **WebSearch/WebFetch permissions** — לא הוספו ל-`.claude/settings.local.json`. בקריאה הראשונה של חן ייתכן prompt הרשאה למשתמש.
 - `.claude/agents/.gitkeep` כעת **מיותר טכנית** (התיקייה כבר לא ריקה — יש בה את `yael.md`). להישאר בעקבות ההוראה הכוללת "לא לדרוס", או להסיר במעבר עתידי?
 - האם להגדיר `model:` ל-[[file-yael-md|yael]] (sonnet/opus/haiku) או להישאר ב-`inherit` (ברירת-מחדל)? `sonnet` סביר לכתיבה; `opus` יקר אך איכותי יותר; `haiku` חלש מדי לתוכן.
 - האם להוסיף `permissionMode: acceptEdits` ליעל, כדי שלא תייצר prompts בכל Write ל-`Output/`?
@@ -109,3 +112,29 @@ aliases:
   - יעל **כן יוצרת HTML עם placeholders כטקסט-שורה** (לא בתוך `<img>`). ראובן עושה literal substitution — דורש שה-substitution string יהיה ייחודי באמת. אם משתמש כותב `{{IMAGE_NEEDED:` במאמר עצמו, יהיה collision.
 
 - **Related:** [[file-yuval-md]], [[skill-gpt-image-gen]], [[file-claude-md]], [[file-yael-md]], [[file-env]], [[file-env-example]], [[file-gitignore]], [[file-gitkeep-yuval-reference]], [[file-gitkeep-yuval-outputs]], [[file-gitkeep-output-images]]
+
+### 2026-05-13 — יצירת sub-agent chen (חוקרת הרשת) + זרימה חן→יעל→יובל [shipped]
+
+- **What was done:**
+  - **Sub-agent חדש** [[file-chen-md|חן]] ב-`.claude/agents/chen.md` — `tools: WebSearch, WebFetch, Read, Write, Edit, Glob, Grep`. Body בעברית: תפקיד והערך המוסף ("מידע עכשווי, מקורות אמיתיים, לא הזיות"), טעינת קונטקסט חובה (`Read` + `Grep` של `chen/Memory/searches.md` עם חלון 30 יום), הגדרת "נושא דינמי" (חדשות / מחירים / השקות → תמיד לחפש מחדש), workflow מלא (זיכרון → WebSearch → WebFetch → סינון → טיפול בכישלון עד 3 שאילתות → שמירה ל-`Content/<YYYY-MM-DD>-<slug>.md` עם YAML frontmatter → לוג ב-Memory → דיווח), קריטריונים למקור איכותי, פורמט entry קבוע ב-Memory.
+  - **תיקיית עבודה חדשה** [[file-chen-memory-searches|chen/Memory/]] עם `searches.md` (header + הפניה לפורמט) ו-`.gitkeep`.
+  - **עדכון [[file-claude-md|CLAUDE.md]]:** (a) בלוק חן הקצר ("החוקרת. אוספת מידע") הוחלף בבלוק מלא בסגנון יעל/יובל עם triggers בעברית/אנגלית; (b) סעיף חדש "תהליך מחקר → תוכן → תמונות" שמתאר את הזרימה חן → (אופציונלי) יעל → (אופציונלי) יובל, ואת תנאי הסיום (רק חן אם הבקשה הייתה רק מחקר); (c) `chen/Memory/` נוסף למבנה התיקיות, ו-`Content/` הורחב כדי לציין שגם חן יכולה להניח שם קבצים; (d) הערת הסיום עודכנה — שלושת הסוכנים מוגדרים, השלב הבא slash commands.
+  - **תיעוד vault מלא:** [[file-chen-md]], [[file-chen-memory-searches]] + עדכון [[_index]].
+
+- **Decisions:**
+  - **7 כלים** (WebSearch, WebFetch, Read, Write, Edit, Glob, Grep) — בלי Bash (WebSearch/WebFetch built-in), בלי Skill, בלי Agent. מאפיין מבדל עיקרי מ-LLM ידע: WebFetch מספק מידע עכשווי + לינק.
+  - **קובץ flat** (תואם ל-yael/yuval).
+  - **YAML frontmatter ב-`Content/<YYYY-MM-DD>-<slug>.md`** עם `source_url`, `source_title`, `source_date`, `fetched_at`, `query` — אושר עם המשתמש. יעל קוראת רק את הגוף (לפי ה-spec שלה), אז ה-frontmatter לא מפריע, אבל קיים לאודיט וכ-source of truth.
+  - **3 retries לפני failure** — מספר שרירותי שעובד טוב. גם הכישלון נרשם ב-Memory כדי שחיפוש עתידי על נושא דומה לא יחזור על אותן שאילתות.
+  - **חלון cache 30 יום קשיח ב-prompt** — Open Question אם להגמיש. בינתיים החלטה פשוטה ועקבית; נושאים דינמיים (חדשות/מחירים) ממילא בורחים מה-cache.
+  - **אוטו-chain ב-CLAUDE.md, לא ב-chen** — חן לא קוראת ליעל ישירות (אין לה `Agent`). ראובן מחליט: triggers של חן בלבד → עוצרים בחן; חן+יעל triggers → ראובן ממשיך אוטומטית.
+  - **שם `chen/Memory/`** (ולא `cache/` או `logs/`) — מבטא גם cache וגם audit trail.
+  - **לא הוספנו WebSearch/WebFetch ל-`settings.local.json`** — Claude Code יבקש הרשאה בריצה ראשונה. המשתמש יחליט אם לאשר one-shot או להוסיף ל-allow list.
+
+- **Notes / Caveats:**
+  - לא בוצע smoke test end-to-end. שיגור "מצאי לי מאמר על Anthropic MCP" אמור לטריגר את חן בלבד; "מצאי ושכתבי מאמר על X" אמור לעשות chain חן→יעל. תרחיש לבדיקה ידנית בסשן הבא.
+  - חן **לא מעדכנת את ה-vault בעצמה** — עקבי עם יעל ויובל. עדכון ה-vault הוא תפקיד ראובן.
+  - שלא כמו יעל/יובל אין לחן `chen/reference/` — אין עדיין הגדרה ברורה מה הסטנדרט שצריך לרפרנס לחיפוש מהרשת. ייתכן שיווצר אם תצטבר קולקציה של "מקור טוב לתחילת זרימה".
+  - **YAML frontmatter ב-`Content/`** — לפי ה-spec של [[file-yael-md|יעל]] היא מתחילה לקרוא מהגוף, אבל הנחת ה-fronmatter לא נבדקה end-to-end איתה. יש סיכון קטן שתשכתב את ה-frontmatter במקום להתעלם — לאמת בריצה הראשונה.
+
+- **Related:** [[file-chen-md]], [[file-chen-memory-searches]], [[file-claude-md]], [[file-yael-md]], [[file-yuval-md]], [[file-gitkeep-content]]

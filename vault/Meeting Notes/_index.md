@@ -29,6 +29,8 @@ tags:
 ### תיעוד סוכנים (sub-agents)
 - [[file-yael-md]] — `.claude/agents/yael.md`, יעל — כותבת התוכן (sub-agent ראשון)
 - [[file-yuval-md]] — `.claude/agents/yuval.md`, יובל — מעצב התמונות (sub-agent שני)
+- [[file-chen-md]] — `.claude/agents/chen.md`, חן — חוקרת הרשת (sub-agent שלישי)
+- [[file-chen-memory-searches]] — `chen/Memory/searches.md`, לוג חיפושים (cache 30 יום + audit trail)
 - [[file-gitkeep-yael-reference]] — `yael/reference/.gitkeep`, placeholder לדוגמאות סגנון כתיבה
 - [[file-gitkeep-yuval-reference]] — `yuval/reference/.gitkeep`, placeholder לדוגמאות סגנון ויזואלי
 - [[file-gitkeep-yuval-outputs]] — `yuval/outputs/.gitkeep`, placeholder לארכיון התמונות של יובל

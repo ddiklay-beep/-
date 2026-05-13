@@ -23,6 +23,12 @@ tags:
 - [[file-gitkeep-skills]] — `.claude/skills/.gitkeep`, placeholder לתיקיית סקילים
 - [[file-settings-local-json]] — `.claude/settings.local.json`, הגדרות מקומיות של Claude Code
 
+### תיעוד סוכנים (sub-agents)
+- [[file-yael-md]] — `.claude/agents/yael.md`, יעל — כותבת התוכן (sub-agent ראשון)
+- [[file-gitkeep-yael-reference]] — `yael/reference/.gitkeep`, placeholder לדוגמאות סגנון
+- [[file-gitkeep-content]] — `Content/.gitkeep`, placeholder לתיקיית מאמרי גלם
+- [[file-gitkeep-output]] — `Output/.gitkeep`, placeholder לתיקיית תוצרים משוכתבים
+
 ### תיעוד סקילים מותקנים — חיצוניים (Superpowers)
 - [[skill-brainstorming]] — סיעור מוחות מובנה
 - [[skill-dispatching-parallel-agents]] — שיגור סוכנים במקביל
